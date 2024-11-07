@@ -1,19 +1,31 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 namespace Asp.net.Core.Web.Api.Controllers
 {
     [Route("Api/[controller]")]
     [ApiController]
+    //[Authorize]
     public class JwtAuthentication : ControllerBase
     {
-        
-        [HttpGet]
-        public ActionResult<List<int>> Get()
+        private IConfiguration _configuration;
+        private ILogger<JwtAuthentication> _logger;
+        public JwtAuthentication(IConfiguration configuration,ILogger<JwtAuthentication> logger)
         {
-            List<int> values = new List<int>()
+            _configuration = configuration;
+            _logger = logger;
+        }
+        [Route("getJwtSecreteKey")]
+        [HttpGet]
+        public ActionResult getJwtSecreteKey()
+        {
+            string? key = _configuration.GetValue<string>("JwtSecret");
+            key = null;
+            if (key == null)
             {
-                1,2,3,4,5,6
-            };
-            return Ok(values);
+                _logger.LogWarning("key is not availabele");
+            }
+            object a = new { Value = key };
+            return Ok(a);
         }
     }
 }
