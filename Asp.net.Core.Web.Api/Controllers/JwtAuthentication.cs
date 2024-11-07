@@ -9,6 +9,7 @@ namespace Asp.net.Core.Web.Api.Controllers
     [Authorize]
     public class JwtAuthentication : ControllerBase
     {
+        
         private IConfiguration _configuration;
         private ILogger<JwtAuthentication> _logger;
         public JwtAuthentication(IConfiguration configuration,ILogger<JwtAuthentication> logger)
@@ -16,16 +17,17 @@ namespace Asp.net.Core.Web.Api.Controllers
             _configuration = configuration;
             _logger = logger;
         }
-        [Route("getSecretKey")]
+        [Route("getList")]
         [HttpGet]
-        public ActionResult getSecretKey()
+        public ActionResult getList()
         {
-            string? value = _configuration.GetValue<string>("SecretKey");          
-            if (value == null)
-            {
-                _logger.LogWarning("key is not availabele");
-            }
-            object result = new { Key = value };
+            List<string>? values = new List<string>()
+                {
+                   "Hi",
+                   "Hello",
+                   "Hey"
+                };
+            object result = new {Values = values };
             return Ok(result);
         }
     }
