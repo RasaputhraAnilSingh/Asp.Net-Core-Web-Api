@@ -6,7 +6,7 @@ namespace Asp.net.Core.Web.Api.Controllers
     [Route("Api/[controller]")]
     [ApiController]
     [EnableCors]
-    //[Authorize]
+    [Authorize]
     public class JwtAuthentication : ControllerBase
     {
         private IConfiguration _configuration;
@@ -20,7 +20,7 @@ namespace Asp.net.Core.Web.Api.Controllers
         [HttpGet]
         public ActionResult getSecretKey()
         {
-            string? value = _configuration.GetValue<string>("JwtSecret");          
+            string? value = _configuration.GetValue<string>("SecretKey");          
             if (value == null)
             {
                 _logger.LogWarning("key is not availabele");
