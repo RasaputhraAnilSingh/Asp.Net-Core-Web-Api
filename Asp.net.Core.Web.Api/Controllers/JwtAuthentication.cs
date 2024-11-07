@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 namespace Asp.net.Core.Web.Api.Controllers
 {
     [Route("Api/[controller]")]
     [ApiController]
+    [EnableCors]
     //[Authorize]
     public class JwtAuthentication : ControllerBase
     {
@@ -14,18 +16,17 @@ namespace Asp.net.Core.Web.Api.Controllers
             _configuration = configuration;
             _logger = logger;
         }
-        [Route("getJwtSecreteKey")]
+        [Route("getSecretKey")]
         [HttpGet]
-        public ActionResult getJwtSecreteKey()
+        public ActionResult getSecretKey()
         {
-            string? key = _configuration.GetValue<string>("JwtSecret");
-            key = null;
-            if (key == null)
+            string? value = _configuration.GetValue<string>("JwtSecret");          
+            if (value == null)
             {
                 _logger.LogWarning("key is not availabele");
             }
-            object a = new { Value = key };
-            return Ok(a);
+            object result = new { Key = value };
+            return Ok(result);
         }
     }
 }
